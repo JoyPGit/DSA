@@ -1,4 +1,4 @@
-package com.sp.dsa;
+package com.dsa;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

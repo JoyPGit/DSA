@@ -1,9 +1,8 @@
-package com.sp.dsa.DP;
+package com.dsa.graph;
 
-public class Graph {
+public class GraphDP {
     /**
      *
      * https://leetcode.com/problems/minimum-cost-to-reach-city-with-discounts/description/
-     * https://leetcode.com/problems/path-with-maximum-gold/
      */
 }

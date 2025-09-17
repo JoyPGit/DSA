@@ -1,4 +1,4 @@
-package com.sp.dsa.Backtracking;
+package com.dsa.Backtracking;
 
 import java.util.*;
 

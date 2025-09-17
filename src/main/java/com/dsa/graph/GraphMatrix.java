@@ -1,4 +1,4 @@
-package com.sp.dsa.graph;
+package com.dsa.graph;
 
 import java.util.*;
 

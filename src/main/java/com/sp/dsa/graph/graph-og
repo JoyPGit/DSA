@@ -20,16 +20,16 @@ Undirected
 
 **Directed**
 
--- **traversal/find count**
+-- [traversal/find_count]
 Evaluate Division
 Keys and Rooms
 Clone Graph
 Find All Possible Recipes from Given Supplies
 
--- **path**
+-- [path]
 All Paths From Source to Target (dfs w/ backtracking)
 
--- **order**
+-- [order]
 Course schedule 1, 2
 Find Eventual Safe States (dfs with safe and unsafe sets/reverse Kahn)
 Reconstruct Itinerary
@@ -37,7 +37,7 @@ Alien Dictionary
 All Ancestors of a Node in a Directed Acyclic Graph (reverse graph)
 
 
--- **time/path**
+-- [time/path]
 Network Delay Time
 Cheapest Flights Within K Stops
 Time Needed to Inform All Employees
@@ -46,23 +46,30 @@ Rotten Oranges
 
 +++++++++++++++++++++++++++++++++++++++++
 
-**<b>Undirected</b>**
+**Undirected**
+
+-- [component]
 Number of Provinces
 Number of Connected Components in an Undirected Graph
 Number of Complete Components
 Redundant Connection
 Graph Valid Tree
+Number of Operations to Make Network Connected
+
+-- [time]
 
 
-**exceptions**
+-- [order/traversal]
+
+**exceptions/tricky**
 Is Graph Bipartite? (bfs)
 Minimum Cost to Reach City With Discounts (bfs with pruning)
 Critical Connections in a Network (dfs)
-
+Tree Diameter(dfs)
 
 **Grid**
 
--- **order/tarversal**
+-- [order/traversal]
 All paths from source to target
 
 -- **time/path**
@@ -71,11 +78,6 @@ Rotting oranges
 __________________________________________________
 **Tricky/Overlapping**
 
-Number of Operations to Make Network Connected
-
 Minimize Malware Spread
-
 Find Minimum Time to Reach Last Room II
-
 Detonate the Maximum Bombs
-Tree Diameter

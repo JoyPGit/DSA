@@ -24,6 +24,8 @@ public class Graph {
      bfs
 
      ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+     Questions
+     ++++++++++++++++++++++++++++++++++++++++++++++++++++++
      **Directed**
 
      -- **traversal/find count**
@@ -42,7 +44,6 @@ public class Graph {
      Alien Dictionary
      All Ancestors of a Node in a Directed Acyclic Graph (reverse graph)
 
-
      -- **time/dist**
      Network Delay Time
      Cheapest Flights Within K Stops
@@ -51,12 +52,15 @@ public class Graph {
      +++++++++++++++++++++++++++++++++++++++++++++++++++
 
      **<b>Undirected</b>**
+
+     -- **components**
      Number of Provinces
      Number of Connected Components in an Undirected Graph
      Number of Complete Components
      Redundant Connection
      Graph Valid Tree
 
+     -- **loop**
 
      **exceptions**
      Is Graph Bipartite? (bfs)
@@ -66,7 +70,7 @@ public class Graph {
      +++++++++++++++++++++++++++++++++++++++++++++++++++
      **Grid**
 
-     -- **order/tarversal**
+     -- **order/traversal**
      All paths from source to target
 
      -- **time/path**
@@ -212,7 +216,7 @@ public class Graph {
     }
 
     /**
-     * 3 course schedule
+     * 3 course schedule (topo sort)
      *  dfs with coloring 0,1,2
      *  https://leetcode.com/problems/course-schedule-ii/submissions/1772729539/
      */
@@ -277,11 +281,11 @@ public class Graph {
                 map.put(i[1], list);
             }
 
-            // toposort
+            // topo sort
             List<Set<Integer>> sets = new ArrayList<>();
             Deque<Integer> q = new LinkedList<>();
 
-            // caching? if parent's ancestors are computed, child import those?
+            // caching? if parent's ancestors are computed, can child import those?
             for(int i =0; i<n; i++){
                 List<Integer> list = new ArrayList<>();
                 if(color[i] == 0) dfs(i, i, list);
@@ -497,7 +501,7 @@ public class Graph {
     }
 
     /**
-     * undirected graphs, union find
+     * Undirected graphs, union find
      * 1. nodes in the same component will have the same group leader
      * 2. if edge exists, both nodes will be part of same component
      *
@@ -609,46 +613,93 @@ public class Graph {
     }
 
     /**
-     * graph valid tree
-     * with bidirectional graphs, ensure visited or parents are used
+     * graph valid tree, union find
+     * a tree doesn't have loops, so it should be a single component
+     * reduce count after every union
+     * https://leetcode.com/problems/graph-valid-tree/submissions/1773857394/
      */
     class Solution5_3 {
-        private Map<Integer, List<Integer>> map = new HashMap<>();
-        private Set<Integer> visited = new HashSet<>();
+        private int count = 0;
+        private int[] parent;
         public boolean validTree(int n, int[][] edges) {
+            this.parent = new int[n];
+            count = n;
+            for(int i =0; i<n; i++) parent[i] = i;
+
             for(int[] edge : edges){
-                List<Integer> list = map.getOrDefault(edge[0], new ArrayList<>());
-                list.add(edge[1]);
-                map.put(edge[0], list);
-
-                list = map.getOrDefault(edge[1], new ArrayList<>());
-                list.add(edge[0]);
-                map.put(edge[1], list);
+                if(!union(edge[0], edge[1])) return false;
             }
-
-            // if all connected, then dfs from any node will do
-            if(dfs(0, -1)) return false;
-            // if not all visited, disconnected comps
-            if(visited.size() != n) return false;
+            // a single component
+            if(count != 1) return false;
             return true;
         }
 
-        // returns true if conflict
-        private boolean dfs(int node, int parent){
-            visited.add(node);
+        private boolean union(int a, int b){
+            int root1 = findParent(a), root2 = findParent(b);
+            if(root1 == root2) return false;
+            else parent[root1] = root2;
+            // after every union reduce count
+            count--;
+            return true;
+        }
 
-            List<Integer> list = map.getOrDefault(node, new ArrayList<>());
-            for(int i : list){
-                // dfs only if unvisited
-                if(!visited.contains(i)) {
-                    if(dfs(i, node)) return true;
-                }
-                // if visited yet, must not be parent
-                else if(i != parent) return true;
+        private int findParent(int node){
+            while(node != parent[node]){
+                parent[node] = parent[parent[node]];
+                node = parent[node];
             }
-            return false;
-
+            return node;
         }
     }
 
+    class Solution5_4 {
+        /**
+         Why visited won't work
+         But visited.size() only counts the number of unique nodes that
+         appeared in any connection — not the number of connected components.
+         This doesn't reflect how many components are left to connect.
+
+         Find the no of components; to connect m comps, we need m-1 edges.
+         If reqd > unreqd, we have a solution
+
+         https://leetcode.com/problems/number-of-operations-to-make-network-connected/submissions/1773950570/
+         */
+        int[] parent;
+        private int reqdEdges = 0, unReqdEdges = 0, count;
+
+        public int makeConnected(int n, int[][] connections) {
+            this.parent = new int[n];
+            this.count = n;
+
+            for(int i =0; i<n; i++) parent[i] = i;
+
+            for(int[] edge : connections){
+                // unnecessary edge
+                if(!union(edge[0], edge[1])) {
+                    // System.out.println("unnecessary "+edge[0]+", "+edge[1]);
+                    unReqdEdges++;
+                }
+            }
+            // System.out.println(count+", "+unnecessaryEdges);
+            reqdEdges = count-1;
+            return (reqdEdges > unReqdEdges)?-1:reqdEdges;
+        }
+
+        private boolean union(int a, int b){
+            int root1 = findParent(a), root2 = findParent(b);
+
+            if(root1 == root2) return false;
+            else parent[root1] = root2;
+            count--;
+            return true;
+        }
+
+        private int findParent(int node){
+            while(node != parent[node]){
+                parent[node] = parent[parent[node]];
+                node = parent[node];
+            }
+            return node;
+        }
+    }
 }

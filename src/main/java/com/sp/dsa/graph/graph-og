@@ -1,0 +1,81 @@
+
+**Check conditions**
+
+Grid
+-> no union find
+dfs (w/ visited)
+bfs
+
+-> with edge weights (adj matrix), else adj list
+-> shortest time/path (BFS w/ pruning)
+-> order/loop (Topo, Dfs w/ coloring / Kahn's)
+-> traversal/count (Dfs)
+-> If no edge weights, prefer dfs
+
+Undirected
+-> loop/components (union find)
+-> bipartite (bfs/union find)
+-> count (dfs)
+
+
+**Directed**
+
+-- **traversal/find count**
+Evaluate Division
+Keys and Rooms
+Clone Graph
+Find All Possible Recipes from Given Supplies
+
+-- **path**
+All Paths From Source to Target (dfs w/ backtracking)
+
+-- **order**
+Course schedule 1, 2
+Find Eventual Safe States (dfs with safe and unsafe sets/reverse Kahn)
+Reconstruct Itinerary
+Alien Dictionary
+All Ancestors of a Node in a Directed Acyclic Graph (reverse graph)
+
+
+-- **time/path**
+Network Delay Time
+Cheapest Flights Within K Stops
+Time Needed to Inform All Employees
+Rotten Oranges
+
+
++++++++++++++++++++++++++++++++++++++++++
+
+**<b>Undirected</b>**
+Number of Provinces
+Number of Connected Components in an Undirected Graph
+Number of Complete Components
+Redundant Connection
+Graph Valid Tree
+
+
+**exceptions**
+Is Graph Bipartite? (bfs)
+Minimum Cost to Reach City With Discounts (bfs with pruning)
+Critical Connections in a Network (dfs)
+
+
+**Grid**
+
+-- **order/tarversal**
+All paths from source to target
+
+-- **time/path**
+Rotting oranges
+
+__________________________________________________
+**Tricky/Overlapping**
+
+Number of Operations to Make Network Connected
+
+Minimize Malware Spread
+
+Find Minimum Time to Reach Last Room II
+
+Detonate the Maximum Bombs
+Tree Diameter

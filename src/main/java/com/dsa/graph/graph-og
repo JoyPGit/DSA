@@ -17,6 +17,7 @@ Undirected
 -> bipartite (bfs/union find)
 -> count (dfs)
 
+**IMP** in bfs, use size only for grid
 
 **Directed**
 

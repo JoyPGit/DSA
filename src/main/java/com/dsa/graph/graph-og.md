@@ -17,7 +17,15 @@ Undirected
 -> bipartite (bfs/union find)
 -> count (dfs)
 
-**IMP** in bfs, use size only for grid
+**IMP** in bfs, [size] needs to be used for grid
+
+**Alogrithms to be used**
+> Dfs (use visited) <br>
+> Dfs with backtracking <br>
+> Bfs (use visited) <br>
+> Bfs with pruning (uses dist arr but not visited) <br>
+> Topo sort (dfs with color 0, 1, 2) <br>
+> Union find <br>
 
 **Directed**
 
@@ -42,8 +50,6 @@ All Ancestors of a Node in a Directed Acyclic Graph (reverse graph)
 Network Delay Time
 Cheapest Flights Within K Stops
 Time Needed to Inform All Employees
-Rotten Oranges
-
 
 +++++++++++++++++++++++++++++++++++++++++
 
@@ -64,9 +70,9 @@ Number of Operations to Make Network Connected
 
 **exceptions/tricky**
 Is Graph Bipartite? (bfs)
-Minimum Cost to Reach City With Discounts (bfs with pruning)
-Critical Connections in a Network (dfs)
-Tree Diameter(dfs)
+Minimum Cost to Reach City With Discounts (bfs with pruning with dp)
+Critical Connections in a Network (tarjan or remove edge with dfs)
+Tree Diameter (dfs)
 
 **Grid**
 
@@ -82,3 +88,17 @@ __________________________________________________
 Minimize Malware Spread
 Find Minimum Time to Reach Last Room II
 Detonate the Maximum Bombs
+
+---------------------------------------------------
+BFS points
+why queue size is maintained in matrix bfs but not edge bfs?
+
+[Graph BFS] (general edges):
+> distance is tracked via dist[] arr
+> If only reachability/traversal needed → no queue size tracking.
+> If shortest path needed → use dist[] array, not always queue size.
+
+[Grid BFS]
+> focus is on levels
+> Much more common to ask for minimum steps from source to target.
+> Queue size is the easiest way to separate levels → naturally counts steps.

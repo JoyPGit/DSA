@@ -1,25 +1,43 @@
+# Graph Algorithms
 
-**Check conditions**
+## Table of Contents
+- [Check conditions](#check-conditions) 
+- [Directed](#directed-1)
+- [Undirected](#undirected)
+- [Grid](#grid)
 
-Grid
--> no union find
-dfs (w/ visited)
-bfs
+### Check conditions 
 
--> with edge weights (adj matrix), else adj list
--> shortest time/path (BFS w/ pruning)
--> order/loop (Topo, Dfs w/ coloring / Kahn's)
--> traversal/count (Dfs)
--> If no edge weights, prefer dfs
+`Grid`
+> no union find
+> dfs (w/ visited)
+> bfs
+<br>
 
-Undirected
--> loop/components (union find)
--> bipartite (bfs/union find)
--> count (dfs)
 
-**IMP** in bfs, [size] needs to be used for grid
+1. with edge weights (adj matrix), else adj list <br>
+2. shortest time/path (BFS w/ pruning) <br>
+3. order/loop (Topo, Dfs w/ coloring / Kahn's) <br>
+4. traversal/count (Dfs) <br>
+5. If no edge weights, prefer dfs <br>
 
-**Alogrithms to be used**
+
+<br>
+
+`Undirected1`
+> loop/components (union find) <br>
+> bipartite/ `shortest time/dist` (bfs) <br>
+> count (dfs) <br>
+
+<br>
+
+**IMP** in bfs, `size` needs to be used for grid
+
+<br>
+
+---
+### **Alogrithms to be used**
+
 > Dfs (use visited) <br>
 > Dfs with backtracking <br>
 > Bfs (use visited) <br>
@@ -27,71 +45,93 @@ Undirected
 > Topo sort (dfs with color 0, 1, 2) <br>
 > Union find <br>
 
-**Directed**
+---
+<br>
+### `Directed`
 
--- [traversal/find_count]
+> [traversal/find_count]
+
 Evaluate Division
 Keys and Rooms
 Clone Graph
 Find All Possible Recipes from Given Supplies
 
--- [path]
+> [path]
+
 All Paths From Source to Target (dfs w/ backtracking)
 
--- [order]
-Course schedule 1, 2
-Find Eventual Safe States (dfs with safe and unsafe sets/reverse Kahn)
-Reconstruct Itinerary
-Alien Dictionary
-All Ancestors of a Node in a Directed Acyclic Graph (reverse graph)
+> [order]
+
+1. Course schedule 1, 2
+1. Find Eventual Safe States (dfs with safe and unsafe sets/reverse Kahn)
+1. Reconstruct Itinerary
+1. Alien Dictionary
+1. All Ancestors of a Node in a Directed Acyclic Graph (reverse graph)
+
+<br>
+> [time/path]
+
+1. Network Delay Time
+1. Cheapest Flights Within K Stops
+1. Time Needed to Inform All Employees
+
+---
+
+### **Undirected**
+
+> [component] [Union find]
+
+1. Number of Provinces
+1. Number of Connected Components in an Undirected Graph
+1. Number of Complete Components
+1. Redundant Connection
+1. Graph Valid Tree
+1. Number of Operations to Make Network Connected
+
+<br>
+
+> [time]
 
 
--- [time/path]
-Network Delay Time
-Cheapest Flights Within K Stops
-Time Needed to Inform All Employees
+> [order/traversal]
 
-+++++++++++++++++++++++++++++++++++++++++
-
-**Undirected**
-
--- [component]
-Number of Provinces
-Number of Connected Components in an Undirected Graph
-Number of Complete Components
-Redundant Connection
-Graph Valid Tree
-Number of Operations to Make Network Connected
-
--- [time]
-
-
--- [order/traversal]
+<br>
 
 **exceptions/tricky**
-Is Graph Bipartite? (bfs)
-Minimum Cost to Reach City With Discounts (bfs with pruning with dp)
-Critical Connections in a Network (tarjan or remove edge with dfs)
-Tree Diameter (dfs)
+1. Is Graph Bipartite? (bfs)
+1. Minimum Cost to Reach City With Discounts (bfs with pruning with dp)
+1. Critical Connections in a Network (tarjan or remove edge with dfs)
+1. Tree Diameter (dfs)
 
-**Grid**
+<br>
 
--- [order/traversal]
-All paths from source to target
+---
+### **Grid**
+<br>
 
--- **time/path**
+> [order/traversal]
+1. All paths from source to target
+1. Pacific Atlantic water flow
+
+<br>
+
+> **time/path**
 Rotting oranges
 
-__________________________________________________
+<br>
+
+---
+
 **Tricky/Overlapping**
 
-Minimize Malware Spread
-Find Minimum Time to Reach Last Room II
-Detonate the Maximum Bombs
+1. Minimize Malware Spread
+1. Find Minimum Time to Reach Last Room II
+1. Detonate the Maximum Bombs
 
----------------------------------------------------
-BFS points
-why queue size is maintained in matrix bfs but not edge bfs?
+---
+*_`BFS points`_*
+<br>
+1. why queue size is maintained in matrix bfs but not edge bfs?
 
 [Graph BFS] (general edges):
 > distance is tracked via dist[] arr

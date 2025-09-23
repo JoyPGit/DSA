@@ -2,7 +2,7 @@
 ```java
 class Solution {
     /**
-    start with a gene -> modify -> should be valid (present in bank)
+    start with a gene > modify -> should be valid (present in bank)
     -> stop when endGene is reached
     -> backtracking, (A/C/G/T)
     */

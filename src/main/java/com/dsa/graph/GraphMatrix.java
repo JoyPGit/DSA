@@ -11,6 +11,8 @@ public class GraphMatrix {
      * -- **time/path** (bfs with pruning)
      * Rotting oranges
      * Walls and Gates
+     * Rotting Oranges
+     * Snakes and Ladders
      *
      *
      * -- [order/traversal] (dfs)
@@ -142,6 +144,93 @@ public class GraphMatrix {
         }
     }
 
+    class Solution {
+        /**
+         1 build arr
+         2 build map
+
+         starting from one ladder, the next ladder won't be considered
+         as we start from index + 1 after climbing ladder
+
+         if ladder or snake, only mark the final node as visited
+
+         visited check and continue too only when adding
+
+         */
+        int[] arr;
+        Map<Integer, Integer> map = new HashMap<>();
+        int[] visited;
+        public int snakesAndLadders(int[][] board) {
+            int m = board.length, n = board[0].length, total = m*n;
+            int index =0, count = 0, base = 0;
+
+            visited = new int[total+1];
+
+            // build map correctly
+            boolean lToR = true;
+            for(int i =m-1; i>=0; i--){
+                if(lToR){
+                    for(int j = 0; j<n; j++){
+                        index++;
+                        if(board[i][j] != -1) map.put(index, board[i][j]);
+                    }
+                }
+                else{
+                    for(int j = n-1; j>=0; j--){
+                        index++;
+                        if(board[i][j] != -1) map.put(index, board[i][j]);
+                    }
+                }
+                lToR = !lToR;
+            }
+
+            // bfs -> no subsequent
+            Deque<Integer> q = new LinkedList<>();
+            q.addLast(1);
+            visited[1] = 1;
+
+            while(q.size() != 0){
+                int size = q.size();
+                for(int s = 0; s<size; s++){
+                    int curr = q.removeFirst();
+                    if(curr == total) return count;
+                    // System.out.println("curr "+curr.index+", "+curr.count);
+
+                    for(int i =1; i<=6; i++){
+                        int newIndex = curr + i;
+                        if(newIndex > total) continue;
+                        // TODO : find why
+                        // THIS IS THE PROBLEM, why?
+                        // You're checking visited[newIndex] before applying
+                        // the ladder/snake logic
+                        // if(visited[newIndex] != 0) continue;
+
+                        // TODO : find why
+                        // THIS IS THE PROBLEM; why?
+                        // if(newIndex == total) return count+1;
+
+                        if(map.containsKey(newIndex)){
+                            // go to the top index of ladder
+                            newIndex = map.get(newIndex);
+                        }
+
+                        // TODO : find why it works here but not at line 210
+                        if(newIndex == total) return count+1;
+
+                        if(visited[newIndex] != 0) continue;
+                        q.addLast(newIndex);
+                        visited[newIndex] = 1;
+                    }
+                }
+                count++;
+
+            }
+            return -1;
+
+        }
+
+    }
+
     /**
      * isSafe when grid[i][j] = 0;
      * mark visited while adding to q for quicker processing
@@ -195,6 +284,144 @@ public class GraphMatrix {
     }
 
     /**
+     * bfs
+     * visited, mark when adding to q
+     * dir 0 -> left, 1 -> up, 2 -> right, 3 -> down
+     * hold drection as well
+     * check if there exists a wall in the same direction, if yes go orthogonal
+     * https://leetcode.com/problems/the-maze/submissions/1779241937/
+     */
+    class Solution1_4 {
+
+        private int[][][] visited;
+        private Deque<Node> q = new LinkedList<>();
+
+        public boolean hasPath(int[][] maze, int[] start, int[] destination) {
+            int m = maze.length, n = maze[0].length;
+            visited = new int[m][n][4];
+
+            for(int i =0; i<4; i++) {
+                q.addLast(new Node(start[0], start[1], i));
+                visited[start[0]][start[1]][i] = 1; //
+            }
+
+            while(q.size() != 0){
+                int size = q.size();
+                for(int s = 0; s<size; s++){
+                    Node curr = q.removeFirst();
+                    // System.out.println(curr);
+                    if(hasWall(curr, maze)){
+                        // System.out.println("has opp "+curr);
+                        // ball can stop at dest only if opposing wall, hence inside
+                        // hasWall
+                        if(curr.row == destination[0] && curr.col == destination[1])
+                            return true;
+                        // add ortho dirs;
+                        addOrthoDirs(curr, maze);
+                    }
+                    else {
+                        // continue in same dir
+                        addSameDir(curr, maze);
+                    }
+                }
+            }
+            return false;
+        }
+
+        private boolean hasWall(Node node, int[][] arr){
+            int row = node.row, col = node.col;
+            if(node.dir == 0) col--;
+            if(node.dir == 1) row--;
+            if(node.dir == 2) col++;
+            if(node.dir == 3) row++;
+            if(row>=0 && row<arr.length
+                    && col>=0 && col< arr[0].length
+                    && arr[row][col] == 1) return true;
+            else if(row<0 || row>=arr.length // >=
+                    || col<0 || col>=arr[0].length) return true;
+            return false;
+        }
+
+        private void addOrthoDirs(Node node, int[][] arr){
+            if(node.dir == 0 || node.dir == 2){
+                addUp(node, arr);
+                addDown(node, arr);
+            }
+
+            if(node.dir == 1 || node.dir == 3){
+                addLeft(node, arr);
+                addRight(node, arr);
+            }
+        }
+
+        private void addUp(Node node, int [][] arr){
+            int row = node.row-1, col = node.col;
+            if(isSafe(row, col, 1, arr)) {
+                q.addLast(new Node(row, col, 1));
+                visited[row][col][1] = 1;
+            }
+        }
+
+        private void addDown(Node node, int [][] arr){
+            int row = node.row+1, col = node.col;
+            if(isSafe(row, col, 3, arr)) { // node.dir might be diff
+                q.addLast(new Node(row, col, 3));
+                visited[row][col][3] = 1;
+            }
+        }
+
+        private void addLeft(Node node, int [][] arr){
+            int row = node.row, col = node.col-1;
+            if(isSafe(row, col, 0, arr)) {
+                q.addLast(new Node(row, col, 0));
+                visited[row][col][0] = 1;
+            }
+        }
+
+        private void addRight(Node node, int [][] arr){
+            int row = node.row, col = node.col+1;
+            if(isSafe(row, col, 2, arr)) {
+                q.addLast(new Node(row, col, 2));
+                visited[row][col][2] = 1;
+            }
+        }
+
+        private void addSameDir(Node node, int[][] arr){
+            int row = node.row, col = node.col;
+            if(node.dir == 0) col--;
+            if(node.dir == 1) row--;
+            if(node.dir == 2) col++;
+            if(node.dir == 3) row++;
+            if(isSafe(row, col, node.dir, arr)) {
+                q.addLast(new Node(row, col, node.dir));
+                visited[row][col][node.dir] = 1;
+            }
+        }
+
+        // add only if unvisited in the same dir
+        private boolean isSafe(int row, int col, int dir, int[][] arr){
+            if(row>=0 && row<arr.length
+            && col>=0 && col<arr[0].length
+            && visited[row][col][dir] == 0
+            && arr[row][col] == 0) return true;
+            return false;
+        }
+
+        class Node{
+            int row, col, dir;
+            Node(int r, int c, int d){
+                this.row = r;
+                this.col = c;
+                this.dir = d;
+            }
+
+            public String toString(){
+                return "{"+this.row+", "+this.col+", "+this.dir+"}";
+            }
+        }
+    }
+
+    /**
      * dfs recur w/ visited -> marking as 2 is equivalent to visited
      *
      */
@@ -234,4 +461,27 @@ public class GraphMatrix {
      * https://leetcode.com/problems/number-of-closed-islands/
      * https://leetcode.com/problems/pacific-atlantic-water-flow/
      */
+
+  
+
+
+    public static void main(String[] args) {
+        GraphMatrix gm = new GraphMatrix();
+        int[][] maze = new int[][]{{0,0,1,0,0},{0,0,0,0,0},{0,0,0,1,0},
+                {1,1,0,1,1}, {0,0,0,0,0}};
+
+        int[] start = new int[]{0,4}, destination = new int[]{4,4};
+        gm.new Solution1_4().hasPath(maze, start, destination);
+    }
 }
+
+
+/**
+ *
+ *
+ * snakes
+ *
+ * {3=2, 5=6, 6=9, 8=7}
+ *
+ * [-1, -1, -1, 2, 9, 6, -1, -1, 7, -1]
+ */

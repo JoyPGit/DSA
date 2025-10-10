@@ -462,7 +462,126 @@ public class GraphMatrix {
      * https://leetcode.com/problems/pacific-atlantic-water-flow/
      */
 
-  
+    class Solution2_2 {
+        /**
+         if we start from the middle dia ([0, m-1], [m-1][0]) and go up and down?
+         add to safe list
+         if further nodes reach safe state they can reach the corresponding ocean
+         (OR)
+         start 2 dfs dfs1 for pacific, dfs2 for atlantic?
+         2 dp state arrs?
+         (OR)
+         visited might nt be reqd coz of prev/only visiting lesser ht nodes?
+
+         dp boolean or int (0, 1, 2) -> can hold visietd as well?
+
+         1-> pacific, 2 -> atlantic; if dfs logic is same,
+         maybe only target can be changed?
+
+         isSafe -> will all be visited? when to backtrack after isSafe or
+         outside of it?
+         */
+        private List<List<Integer>> res = new ArrayList<>();
+        private int[] rows = {0, 1, 0, -1}, cols = {-1, 0, 1, 0};
+        private int[][] dp1, dp2;
+        private int[][] visited;
+        private Set<String> set = new HashSet<>();
+        public List<List<Integer>> pacificAtlantic(int[][] heights) {
+            int m = heights.length, n = heights[0].length;
+            dp1 = new int[m][n]; dp2 = new int[m][n];
+            visited = new int[m][n];
+            // Arrays.fill(dp1[0], true);
+            // for(int i =0; i<m; i++) dp1[i][0] = true;
+
+            // Arrays.fill(dp2[m-1], true);
+            // for(int i =0; i<m; i++) dp2[i][n-1] = true;
+
+            for(int i =0; i<m; i++){
+                for(int j =0; j<n; j++){
+                    // 1 -> pacific check for [row][col]
+                    // [0] row or [0] col
+                    if(dfs1(i, j, heights, Integer.MIN_VALUE, 0, 0, visited)){
+                        set.add(i+","+j);
+                    };
+                }
+            }
+
+            for(int i =0; i<m; i++){
+                for(int j =0; j<n; j++){
+                    // 2 -> atlantic check for [row][col]
+                    // [m-1] row or [n-1] col
+                    if(dfs2(i, j, heights, Integer.MIN_VALUE, m-1, n-1, visited)){
+                        if(set.contains(i+","+j)) res.add(new ArrayList<>(Arrays.asList(i, j)));
+                    }
+                }
+                // System.out.println(i+", "+Arrays.toString(dp2[i]));
+            }
+
+            // for(int i =0; i<m; i++){
+            //     for(int j =0; j<n; j++){
+            //         if(dp1[i][j] == 2 && dp2[i][j] == 2) {
+            //             res.add(Arrays.asList(i, j));
+            //         }
+            //     }
+            // }
+
+            return res;
+        }
+
+        private boolean dfs1(int row, int col, int[][] arr, int prev, int targetRow, int targetCol, int[][] visited){
+            if(isSafe(row, col, arr, prev, visited)){
+                // if(dp1[row][col] != 0) return dp1[row][col] == 2?true:false;
+                if(row == targetRow || col == targetCol){
+                    // dp1[row][col]  = 2;
+                    return true;
+                }
+                visited[row][col] = 1;
+                boolean val = false;
+                for(int i =0; i<4; i++){
+                    int newRow = row + rows[i], newCol = col + cols[i];
+                    val |= dfs1(newRow, newCol, arr, arr[row][col], targetRow, targetCol, visited);
+                }
+                // if(val) dp1[row][col] = 2;
+                // else dp1[row][col] = 1;
+                visited[row][col] = 0;
+                return val;
+            }
+            return false;
+        }
+
+        private boolean dfs2(int row, int col, int[][] arr, int prev, int targetRow, int targetCol, int[][] visited){
+            if(isSafe(row, col, arr, prev, visited)){
+                // if(dp2[row][col] != 0) return dp2[row][col] == 2?true:false;
+
+                if(row == targetRow || col == targetCol){
+                    // dp2[row][col]  = 2;
+                    return true;
+                }
+                visited[row][col] = 1;
+                System.out.println(row+", "+col);
+                boolean val = false;
+                for(int i =0; i<4; i++){
+                    int newRow = row + rows[i], newCol = col + cols[i];
+                    // if(isSafe())
+                    val |= dfs2(newRow, newCol, arr, arr[row][col], targetRow, targetCol, visited);
+                }
+                System.out.println(val);
+                // if(val) dp2[row][col] = 2;
+                // else dp2[row][col] = 1;
+                visited[row][col] = 0;
+                return val;
+            }
+            return false;
+        }
+
+        private boolean isSafe(int row, int col, int[][] arr, int prev, int[][] visited){
+            if(row>=0 && row<arr.length
+                    && col>= 0 && col<arr[0].length
+                    && arr[row][col] >= prev
+                    && visited[row][col] == 0) return true;
+            return false;
+        }
+    }
 
 
     public static void main(String[] args) {

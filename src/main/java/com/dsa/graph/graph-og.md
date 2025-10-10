@@ -31,7 +31,14 @@
 
 <br>
 
-**IMP** in bfs, `size` needs to be used for grid
+**IMP** in bfs, 
+> 1 `size` needs to be used for grid <br>
+> 
+> 2 `visited` always mark visited when adding to q, not when processing the node, why? <br> 
+> `visited` is for restricting the addition of nodes to q, <br> 
+> **if node hasn't been added twice in the first place, it 
+> won't be processed twice**
+
 
 <br>
 
